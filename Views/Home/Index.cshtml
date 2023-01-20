@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<script>
+
+    function DisplayImage() {
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetImage",
+            data: { "ImageName": $("#Value option:selected").text() },
+            success: function (response) {
+                $("#img").attr('src', 'data:image/png;base64,' + response);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+
+    function ShowCost() {
+        var str = "You have selected " + $("#Value option:selected").text() + " and the cost of this item is Rs." + $("#Value").val();
+        $("#spnLabel").html(str);
+    }
+
+</script>
+<div class="row">
+    <br />
+    @*@using (Html.BeginForm("ShowCost", "Home", FormMethod.Post))
+    {*@
+        @Html.ListBox("Value", ViewBag.Store as SelectList, new { onChange = "DisplayImage();" })
+        <br />
+        <img id="img" name="img" src="" />
+        <br />
+        <input type="button" value="Get Cost" name="btnSubmit" onclick="ShowCost();" />
+        <br />
+        <br />
+        <span id="spnLabel"></span>
+    @*}*@
+</div>
